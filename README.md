@@ -9,7 +9,7 @@ It calculates the system's state using mathematical model of the process and cla
 Sensor fusion - is a process of combining measurements from different sensors to get one accurate picture.  
 Sensor Fusion for Pedestrian Tracking using RADAR and LIDAR sensors is an actual task for the self-driving car. In this project we use Extended Kalman Filter to combine data from RADAR and LIDAR to track pedestrian position and velocity.  
   
-![alt tag](http://url/to/img.png)
+![alt tag](https://github.com/olegleyz/SDCND-T2P1-EKF/blob/master/process-flow.png)
 Image: Udacity Self-Driving Car Nanodegree  
     
 ## Dependencies
