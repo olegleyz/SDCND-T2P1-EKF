@@ -1,4 +1,5 @@
-# LIDAR and RADAR Sensor Fusion using Extended Kalman Filter
+# Extended Kalman Filter  
+## Pedestrian Tracking using measurements from RADAR and LIDAR  
 Self-Driving Car Engineer Nanodegree Program  
 Term 2. Project 1
 
