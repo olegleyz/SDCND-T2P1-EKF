@@ -2,7 +2,7 @@
 // Created by Oleg Leyzerov on 30/03/2017.
 //
 
-#include "Jacobian.h"
+#include "jacobian.h"
 #include "Eigen/Dense"
 #include <iostream>
 

@@ -3,7 +3,7 @@
 #include <vector>
 #include <fstream>
 #include "tracking.h"
-#include "Jacobian.h"
+#include "jacobian.h"
 
 using namespace std;
 using Eigen::VectorXd;
