@@ -1,5 +1,5 @@
 # LIDAR and RADAR Sensor Fusion using Extended Kalman Filter
-Self-Driving Car Engineer Nanodegree Program
+Self-Driving Car Engineer Nanodegree Program  
 Term 2. Project 1
 
 ---
@@ -8,7 +8,10 @@ It calculates the system's state using mathematical model of the process and cla
   
 Sensor fusion - is a process of combining measurements from different sensors to get one accurate picture.  
 Sensor Fusion for Pedestrian Tracking using RADAR and LIDAR sensors is an actual task for the self-driving car. In this project we use Extended Kalman Filter to combine data from RADAR and LIDAR to track pedestrian position and velocity.  
-
+  
+![alt tag](http://url/to/img.png)
+Image: Udacity Self-Driving Car Nanodegree  
+    
 ## Dependencies
 
 * cmake >= 3.5
