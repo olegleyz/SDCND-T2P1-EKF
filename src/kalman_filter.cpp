@@ -29,9 +29,13 @@ void KalmanFilter::Update(const VectorXd &z) {
 }
 
 void KalmanFilter::UpdateRadar(const VectorXd &z) {
-    if (x_[0] == 0 && x_[1] == 0) {
-        x_[0] = 0.001;
-        x_[1] = 0.001;
+    if (x_[0] < epsilon && x_[1] < epsilon) {
+        x_[0] = epsilon;
+        x_[1] = epsilon;
+    } else if (x_[0] < epsilon) {
+        // if the px equal to zero, the object is directly at the right or left
+        // phi is PI/2 or -PI/2
+        x_[0] = epsilon;
     }
     VectorXd h_(3);
     float px, px2, py, py2, sps, vx, vy;
@@ -45,12 +49,12 @@ void KalmanFilter::UpdateRadar(const VectorXd &z) {
     h_ << sps, atan(py / px), (px * vx + py * vy) / sps;
     VectorXd y = z - h_;
 
-    //y[1] += 2*PI; // normalizing PHI
-
     MatrixXd Hj = Jacobian(x_);
     MatrixXd Ht = Hj.transpose();
-    MatrixXd S = Hj * P_ * Ht + Rr_;
-    MatrixXd K = P_ * Ht * S.inverse();
+    MatrixXd PHt = P_ * Ht;
+    MatrixXd S = Hj * PHt + Rr_;
+    MatrixXd K = PHt * S.inverse();
+
     x_ = x_ + K * y;
     long x_size = x_.size();
     MatrixXd I_ = MatrixXd::Identity(x_size, x_size);

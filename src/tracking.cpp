@@ -13,7 +13,7 @@ using Eigen::MatrixXd;
 Tracking::Tracking(){
     is_initialized_ = false;
     previous_timestamp_ = 0;
-
+    kf_.epsilon = 0.001;
     kf_.x_ = VectorXd(4); // 4D state vector
     kf_.P_ = MatrixXd(4, 4); // state covariance matrix
     kf_.P_ << 1, 0, 0, 0,
@@ -51,7 +51,20 @@ Tracking::~Tracking(){
 }
 void Tracking::ProcessMeasurement(const MeasurementPackage &measurement_pack, const VectorXd &ground_truth) {
     if (!is_initialized_) {
-        kf_.x_ << measurement_pack.raw_measurements_[0], measurement_pack.raw_measurements_[1], 0, 0;
+        if (measurement_pack.sensor_type_ == MeasurementPackage::LASER) {
+            kf_.x_ << measurement_pack.raw_measurements_[0], measurement_pack.raw_measurements_[1], 0, 0;
+        } else if (measurement_pack.sensor_type_ == MeasurementPackage::RADAR) {
+            // converting rho, phi, rho dot into position and velocity
+            float px = measurement_pack.raw_measurements_[0] * cos(measurement_pack.raw_measurements_[1]);
+            float py = measurement_pack.raw_measurements_[0] * sin(measurement_pack.raw_measurements_[1]);
+            float vx = measurement_pack.raw_measurements_[2] * cos(measurement_pack.raw_measurements_[1]);
+            float vy = measurement_pack.raw_measurements_[2] * sin(measurement_pack.raw_measurements_[1]);
+            if (px == 0 && py == 0) {
+                px = kf_.epsilon;
+                py = kf_.epsilon;
+            }
+            kf_.x_ << px, py, vx, vy;
+        }
         previous_timestamp_ = measurement_pack.timestamp_;
         is_initialized_ = true;
         return;
@@ -70,7 +83,7 @@ void Tracking::ProcessMeasurement(const MeasurementPackage &measurement_pack, co
             0, dt_4/4.0*noise_ay, 0, dt_3/2.0*noise_ay,
             dt_3/2.0*noise_ax, 0 , dt_2*noise_ax, 0,
             0, dt_3/2.0*noise_ay, 0, dt_2*noise_ay;
-    if (dt>0) {
+    if (dt>kf_.epsilon) {
         kf_.Predict();
     }
     if (measurement_pack.sensor_type_ == MeasurementPackage::RADAR) {

@@ -19,6 +19,7 @@ public:
     MatrixXd H_; // measurement matrix
     MatrixXd R_; // measurement (LIDAR) covariance matrix
     MatrixXd Rr_; // measurement (RADAR) covariance matrix
+    float epsilon; // small value to substitute zero
 
     KalmanFilter(); // constructor
     virtual ~KalmanFilter(); // destructor
